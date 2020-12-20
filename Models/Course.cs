@@ -11,8 +11,8 @@ namespace MeusCursos.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "Informe o titulo do curso")]
         public string Title { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public double Hours { get; set; }
         public double Price { get; set; }
         public int IdCategory { get; set; }
