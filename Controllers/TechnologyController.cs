@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using MeusCursos.Data;
 using MeusCursos.Models;
@@ -8,35 +7,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeusCursos.Controllers
 {
-    [Route("categories")]
-    public class CategoryController : ControllerBase
+    [Route("tecnologias")]
+    public class TechonologyController : ControllerBase
     {
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<Category>>> Get(
+        public async Task<ActionResult<Technology>> Get(
             [FromServices] DataContext context
         )
         {
-            var categories = await context.Categories.AsNoTracking().ToListAsync();
-            return Ok(categories);
+            var technologies = await context.Techonologies.AsNoTracking().ToListAsync();
+            return Ok(technologies);
         }
 
         [HttpGet]
         [Route("{id:int}")]
-        public async Task<ActionResult<Category>> GetById(
+        public async Task<ActionResult<Technology>> GetById(
             int id,
             [FromServices] DataContext context
-            )
+        )
         {
-            var category = await context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-
-            return Ok(category);
+            var technologies = await context.Techonologies.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return Ok(technologies);
         }
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult<Category>> Post(
-            [FromBody] Category model,
+        public async Task<ActionResult<Technology>> Post(
+            [FromBody] Technology model,
             [FromServices] DataContext context
         )
         {
@@ -47,31 +45,31 @@ namespace MeusCursos.Controllers
             {
                 context.Add(model);
                 await context.SaveChangesAsync();
-
                 return Ok(model);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = $"Não foi possivel criar a categoria, erro {ex.Message}" });
+                return BadRequest(new { message = $"Não foi possivel criar a tecnologia, erro {ex.Message}" });
             }
         }
 
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<ActionResult<Category>> Put(
+        public async Task<ActionResult<Technology>> Put(
             int id,
-            [FromBody] Category model,
+            [FromBody] Technology model,
             [FromServices] DataContext context
-            )
+        )
         {
             if (model.Id != id)
-                return NotFound(new { message = "Categoria não encontrada" });
+                return NotFound(new { message = "Tecnologia não encontrada" });
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             try
             {
-                context.Entry<Category>(model).State = EntityState.Modified;
+                context.Entry<Technology>(model).State = EntityState.Modified;
                 await context.SaveChangesAsync();
                 return Ok(model);
             }
@@ -82,30 +80,31 @@ namespace MeusCursos.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = $"Não foi possivel atualizar a categoria, erro: {ex.Message}" });
+                return BadRequest(new { message = $"Não foi possivel atualizar a tecnologia, erro: {ex.Message}" });
             }
         }
 
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<ActionResult<List<Category>>> Delete(
+        public async Task<ActionResult<Technology>> Delete(
             int id,
             [FromServices] DataContext context
-            )
+        )
         {
-            var category = await context.Categories.FirstOrDefaultAsync(x => x.Id == id);
-            if (category == null)
-                return NotFound(new { message = "Categoria não encontrada" });
+            var technology = await context.Techonologies.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (technology == null)
+                return NotFound(new { message = "Tecnologia não encontrada" });
 
             try
             {
-                context.Categories.Remove(category);
+                context.Techonologies.Remove(technology);
                 await context.SaveChangesAsync();
-                return Ok(new { message = "Categoria removida com sucesso" });
+                return Ok(new { message = "Tecnologia removida com sucesso" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = $"Não foi possível remover sua categoria, erro: {ex.Message}" });
+                return BadRequest(new { message = $"Não foi possível remover a teconologia, erro: {ex.Message}" });
             }
         }
     }
