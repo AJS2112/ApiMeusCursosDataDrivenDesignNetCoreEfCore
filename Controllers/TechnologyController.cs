@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeusCursos.Controllers
 {
-    [Route("tecnologias")]
+    [Route("technologies")]
     public class TechonologyController : ControllerBase
     {
         [HttpGet]
